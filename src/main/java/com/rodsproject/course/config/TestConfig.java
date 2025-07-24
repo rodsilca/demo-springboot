@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.rodsproject.course.entities.Category;
 import com.rodsproject.course.entities.Order;
+import com.rodsproject.course.entities.OrderItem;
 import com.rodsproject.course.entities.Product;
 import com.rodsproject.course.entities.User;
 import com.rodsproject.course.entities.enums.OrderStatus;
 import com.rodsproject.course.repositories.CategoryRepository;
+import com.rodsproject.course.repositories.OrderItemRepository;
 import com.rodsproject.course.repositories.OrderRepository;
 import com.rodsproject.course.repositories.ProductRepository;
 import com.rodsproject.course.repositories.UserRepository;
@@ -33,6 +35,9 @@ public class TestConfig implements CommandLineRunner{
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
@@ -55,6 +60,8 @@ public class TestConfig implements CommandLineRunner{
 		Order o2 = new Order(null, Instant.parse("2025-07-21T03:42:10Z"), OrderStatus.DELIVERED,u2);
 		Order o3 = new Order(null, Instant.parse("2025-07-22T15:21:22Z"),OrderStatus.WAITING_PAYMENT, u1); 
 		
+		
+		
 		categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		p1.getCategories().add(cat2);
@@ -67,5 +74,13 @@ public class TestConfig implements CommandLineRunner{
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		userRepository.saveAll(Arrays.asList(u1,u2));
 		orderRepository.saveAll(Arrays.asList(o1,o2,o3));
+		
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice()); 
+		
+		
+		orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 	}
 }
